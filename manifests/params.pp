@@ -11,4 +11,11 @@ class vim::params {
       fail("Unsupported platform: ${::operatingsystem}")
     }
   }
+  $jump_last = true
+  $indent = true
+  $showcmd = true
+  $showmatch = true
+  $ignorecase = false
+  $smartcase = true
+  $incsearch = true
 }

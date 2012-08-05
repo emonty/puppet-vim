@@ -30,6 +30,34 @@
 #     Only set this, if your platform is not supported or you know, what you're doing.
 #     Default: auto-set, platform specific
 #
+#   [*jump_last*]
+#     Configures vim to jump to last place open in the file
+#     Default: true
+#
+#   [*indent*]
+#     Turns on automatic indent rules
+#     Default: true
+#
+#   [*showcmd*]
+#     Show (partial) command in status line.
+#     Default: true
+#
+#   [*showmatch*]
+#     Show matching brackets.
+#     Default: true
+#
+#   [*ignorecase*]
+#     Do case insensitive matching
+#     Default: false
+#
+#   [*smartcase*]
+#     Do smart case matching
+#     Default: true
+#
+#   [*incsearch*]
+#     Incremental search
+#     Default: true
+#
 # Actions:
 #   Installs vim and, if enabled, set it as default editor.
 #
@@ -46,7 +74,14 @@ class vim(
   $autoupgrade = false,
   $package = $vim::params::package,
   $set_editor_cmd = $vim::params::set_editor_cmd,
-  $test_editor_set = $vim::params::test_editor_set
+  $test_editor_set = $vim::params::test_editor_set,
+  $jump_last = $vim::params::jump_last,
+  $indent = $vim::params::indent,
+  $showcmd = $vim::params::showcmd,
+  $showmatch = $vim::params::showmatch,
+  $ignorecase = $vim::params::ignorecase,
+  $smartcase = $vim::params::smartcase,
+  $incsearch = $vim::params::incsearch
 ) inherits vim::params {
 
   case $ensure {
@@ -76,4 +111,14 @@ class vim(
       require => Package[$package],
     }
   }
+
+  file { '/etc/vim/vimrc.local':
+    ensure => present,
+    owner  => 'root',
+    group => 'root',
+    mode => 444,
+    content => template('vim/vimrc.local.erb'),
+    replace => 'true',
+  }
+
 }
